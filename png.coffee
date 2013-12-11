@@ -245,7 +245,11 @@ class PNG
                     throw new Error "Invalid filter algorithm: " + data[pos - 1] 
 
             row++
-            
+        if @bits == 16
+            uint8pixels = new Uint8Array(this.width * this.height * this.colors);
+            for i in [0...uint8pixels.length] by 1
+                uint8pixels[i] = 255 * ((pixels[2 * i] << 8) | pixels[2 * i + 1]) / 65535;
+            pixels = uint8pixels;
         return pixels
         
     decodePalette: ->
